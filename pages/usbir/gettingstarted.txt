@@ -1,0 +1,221 @@
+
+====== Getting Started with the Iguanaworks USB IR Transceiver (Linux) ======
+
+{{http://www.iguanaworks.net/wp-content/uploads/products/usb-ir-transceiver/USB-LED-300x113.jpg}}
+
+Unlike our serial version of this product, to use and communicate with the USB device, the igdaemon software must be installed and running. The igclient program (or libiguanaIR.so library) communicates with our device through the igdaemon. 
+
+This guide will help you install and configure the necessary software so use the USB IR Transceiver. If it does not, please submit a [[http://iguanaworks.net/projects/IguanaIR/newticket|Support Ticket]]
+
+  - Installing the iguanaIR software (daemon and client).
+  - Testing iguanaIR using igclient.
+  - Installing LIRC and testing it with iguanaIR.
+  - Getting a valid lircd.conf.
+  - Using it all.
+
+===== Step 1: Installing iguanaIR =====
+
+Install the iguanair software package. You can get the software and installation instructions at [[http://iguanaworks.net/downloads.php|downloads page]]. We provide rpm and deb software repositories in addition to direct links to the .deb and .rpm files. A source tarball is also available. We recommend adding our repository to your list of source repositories. Then you can get the iguanair package installed by running (as root or with sudo) the command:
+
+==== Debian-based Distros ====
+
+  - Add our package repository to your sources list by running one of the following three commands based on your computer architecture. 
+  * i386
+<code>
+echo "deb http://iguanaworks.net/downloads/debian binary-i386/" %7Csudo tee /etc/apt/sources.list.d/iguanaworks.list>/dev/null
+</code>
+
+  * amd64
+<code>
+echo "deb http://iguanaworks.net/downloads/debian binary-amd64/" %7Csudo tee /etc/apt/sources.list.d/iguanaworks.list>/dev/null
+</code>
+
+  * Raspberry Pi (raspbian)
+<code>
+echo "deb http://iguanaworks.net/downloads/debian binary-rasp/" %7Csudo tee /etc/apt/sources.list.d/iguanaworks.list>/dev/null
+</code>
+
+  - Update your package list and install our package by running
+<code>
+sudo apt-get update
+sudo apt-get install iguanair
+</code>
+
+
+==== RPM-based Distros ====
+  - Add "http://iguanaworks.net/downloads/${basearch}" to your package repository list.
+ 2. Install our software by running
+<code>
+yum install iguanair
+</code>
+
+
+==== From Source ====
+
+For the source tarball, you will need to compile our software with the commands:
+<code>
+tar -xjf iguanaIR-0.24.tar.bz2
+cd iguanaIR-0.24
+./runCmake
+make -C build
+</code>
+
+
+==== Start igdaemon ====
+
+Our packages have only been tested on Fedora and Ubuntu systems, but should be compatible with most rpm or deb-based distributions. If you have to make changes for your specific distribution, please let us know and we'll include the details in our packages.  Once the software is installed, connect the device (or reconnect it if you plugged it in before) and start the igdaemon.  This should be as simple as running as root the command:
+<code>
+sudo /etc/init.d/iguanaIR start
+</code>
+
+
+That's it. Now to test the daemon is running and communicating with the USB device, you can the following command (as a regular user, no need to run as root or use sudo):
+
+<code>
+igclient --get-version
+</code>
+
+
+and you should see something close to:
+<code>
+get version: success: version=0x0308
+</code>
+
+
+If you see what version of the device you have, you have the daemon installed and working properly. If you do not get this message, see our [[:usbir:faq#Gettingdebugmessagesfromigdaemon|FAQ]].
+
+===== Step 2: Testing iguanaIR =====
+Try running:
+<code>
+igclient --receiver-on --sleep 100
+</code>
+
+This will cause the usb device to enable its receiver and start streaming data in the form of space and pulse timings to the client.  The sleep tells the igclient to wait for 100 seconds before exiting, during which time it prints all received signals.  The signals will not be translated in any way, and so should be an accurate description of what the igclient is seeing.
+
+This is our equivalent to the mode2 program.  The output is not as pretty, but is primarily used to ensure that the device is working, the basic configuration is correct and our IR receiver can see something from your remote.
+
+When this igclient command is executed data will stream past in the terminal.  It looks something like:
+<code>
+received 1 signal(s):
+  space: 152917
+received 1 signal(s):
+  space: 152917
+received 1 signal(s):
+  space: 114688
+received 4 signal(s):
+  space: 6400
+  pulse: 3498
+  space: 1664
+  pulse: 426
+received 7 signal(s):
+  space: 384
+  pulse: 448
+  space: 1237
+  pulse: 426
+  space: 405
+  pulse: 426
+  space: 362
+received 7 signal(s):
+</code>
+
+and so on.  What we can see from this output is that the device was idle for around 0.4 seconds before a 6.4 millisecond header pulse was detected.  All the numbers printed above are times in microseconds.  This is not actually the raw data received from the USB device, but the daemon translates that rather odd format to microsecond pulses and spaces.  If this command fails, please check for the error on the TroubleShooting page.
+
+===== Step 3: Installing and Testing LIRC =====
+I will not go into the details of installing LIRC.  Please refer to http://lirc.org for such details.  The one thing I will say about LIRC installation is that you **must** make sure that your version of LIRC supports the iguanaIR driver.  Most linux distros do not LIRC with support for our driver, altough newer versions of Fedora do.  Take a look at  [[http://iguanaworks.net/2012/compile-lirc-on-fedora-rpm/|here for rpm]] and [[http://iguanaworks.net/2012/compile-lirc-into-deb-package/|here for deb]] for compiling LIRC with our driver the easy way.  To check if you have our driver compiled into LIRC, run:
+<code>
+[[:user@server|~]]$ lircd -H '?'
+Driver "?' not supported.
+Supported drivers:
+        atilibusb
+        bte
+        bw6130
+        creative
+        creative_infracd
+        default
+        dev/input
+        dsp
+        dvico
+        ea65
+        iguanaIR
+        livedrive_midi
+        livedrive_seq
+        logitech
+        mp3anywhere
+        mouseremote
+        mouseremote_ps2
+        null
+        pcmak
+        pinsys
+        pixelview
+        silitek
+        tira
+        udp
+        uirt2
+        uirt2_raw
+</code>
+
+Your output may be shorter or longer, but ensure it contains the **iguanaIR** line.  When the lircd daemon is started, make sure it is passed the "-H iguanaIR" option.  In Fedora, this is done by modifying a line in /etc/sysconfig/lirc to read:
+<code>
+LIRCD_OPTIONS="-H iguanaIR"
+</code>
+
+
+Under Ubuntu LIRC, you will want the file /etc/lirc/hardware.conf to look similar to this
+<code>
+#Chosen Remote Control
+REMOTE="Iguanaworks USB IR Transceiver"
+REMOTE_MODULES=""
+DRIVER="iguanaIR"
+REMOTE_LIRCD_CONF=""
+REMOTE_LIRCD_ARGS="-r"
+LIRCD_CONF="/etc/lirc/lircd.conf"
+
+#Chosen IR Transmitter
+TRANSMITTER="None"
+TRANSMITTER_MODULES=""
+TRANSMITTER_DRIVER=""
+TRANSMITTER_DEVICE=""
+TRANSMITTER_LIRCD_CONF=""
+TRANSMITTER_LIRCD_ARGS=""
+</code>
+
+
+
+and if you want to specify which device to use (if you have multiple), you will also need to add to hardware.conf:
+<code>
+REMOTE_DEVICE="0"
+ or:
+REMOTE_DEVICE="fred"
+</code>
+
+where the remote device is the ID/label of the transceiver.
+
+
+If your version of LIRC does not contain the iguanaIR driver which was introduced between versions 0.8.0 and 0.8.1 you may need to download and compile a newer version of LIRC.  When configuring a supported version of LIRC you should find a "Iguanaworks USB IR transceiver" under Driver Configuration -> USB Devices.  Make sure that driver is selected, either by selecting only it, or compiling with all drivers enabled, as is done by Linux distributions.  From here on I'll assume you have a version of LIRC with many drivers enabled, and so require a -H iguanaIR option to some commands.  At this point you'll need a /etc/lircd.conf.  I'd suggest downloading one from http://lirc.sourceforge.net/remotes, but if you cannot find one for your device you may have to learn the signals using irrecord.
+
+**N.B. for now** you just need **a** /etc/lircd.conf.  It doesn't matter if it's the correct one for your hardware.
+
+Now that the lircd daemon is passed the correct option we need to test it with irsend.  I use:
+<code>
+[[:jdunn@porkrind|~]]$ irsend set_transmitters 1 2 3 4
+[[:jdunn@porkrind|~]]$ irsend send_once panasonic power
+[[:jdunn@porkrind|~]]$ irsend send_once panasonic power
+</code>
+
+This assumes that there's a remote defined in the /etc/lircd.conf named "panasonic" and it has a button defined in the same file called "power".  Pick a remote and button from your own configuration file and use that.  Also, that's not a typo, send the command //twice//.  Success will be if there is no output from either command, however, if you have irsend compiled with debugging support it may print additional informational messages.  If either command fails, please see the TroubleShooting page.  After this test to make sure things are working sending a command twice is not necessary although you may find that LIRC will send commands multiple times due to the min_repeat option in the lircd.conf.
+
+Note: We recommend that you only send on the channels that you are using. Particularly with mono IR blasters connected directly to our sockets (no stereo->mono adapter) using channels 2 and 4 can cause problems. 
+
+Once lircd is tested with irsend command we can be certain that the igdaemon and lircd daemon are both working, and properly communicating.  Congratulations, the iguanaIR specific stuff is done.
+
+===== Step 4: Getting a LIRC configuration =====
+
+As stated above, I'd suggest downloading your lirc configuration from http://lirc.sourceforge.net/remotes.  Even if you can start with a configuration where only a few buttons work that is //far// preferable to starting from scratch.  But, assuming that you can't find such a configuration file check our page about [[:lirc]], and why I'm not real fond of it.  But it's not like we have another option.
+
+===== Step 5: Using it all =====
+
+So most likely you want your remote to work with mplayer, or mythtv.  This is not my department, but a little is said on the [[:lirc]] page.
+
+===== Something isn't working? =====
+
+If you've read through these pages and haven't been able to get your hardware working please [[http://iguanaworks.net/contact-iguanaworks/|contact us]].
