@@ -1,0 +1,63 @@
+====== Firmware Overview ======
+
+The firmware for the IguanaWorks USB IR transceiver is built with PSOC Designer from Cypress.  PSOC Designer is free to download, but the free version only compiles assembly code (not C code).  For this and other reasons, the firmware is entirely in assembly language.
+
+===== Firmware Files =====
+
+The firmware source files are located in the source repository under public/trunk/firmware.  Inside this directory are 3 subdirectories:
+
+  * usb_ir.loader
+  * usb_ir.body
+  * reflasher
+
+==== usb_ir.loader ====
+This directory contains the files that make up the IguanaIR USB boot loader.  Files inside the lib directory provide the low level USB functions are were provided by the Cypress PSoC designer; open the project file (usb_ir.soc), select Device Editor, and use the USB HW Wizard to see the relevant settings..  Additionally, the boot.asm file in the top directory are provided by Cypress.  The other .asm files were written by Joe, base heavily on the original driver code created by Brian.  The human-edited files include the following:
+
+  * main.asm -- main program control including the functionality to handle version checking, firmware loading, page checksumming (incomplete), and reset
+  * pc.asm -- wrapper functions for USB communication
+  * loader.asm -- definitions of well known variables such as the data buffer, packet buffer, and temporary variables
+  * loader.inc -- defines the memory locations of variables and functions accessible by loaded firmware
+  * body.asm -- stubs for the functions that can be implemented by loaded firmware
+
+In total these files provide a number of functions and variables that can be used by firmware written into the flash memory by the boot loader.  This allows firmware developers who wish to modify the functionaliy of the device to replace the interesting functionality over USB, without the Cypress programmer, without risking the chance of "bricking" the device.  For details on the provided functions and variables please examine the source code paying special attention to the loader.inc and body.asm files.
+
+==== usb_ir.body ====
+
+The USB body code, i.e. the more interesting functionality provided by the firmware is contained within the usb_ir.body directory.  Much like the usb_ir.loader there is a lib subdirectory, however it contains a single file, a place holder called empty.asm.  Due to limitations in the PSoC there must be a library to include, even if it contains no code whatsoever.  In the top level directory are a number of source files:
+
+  * boot.asm -- stripped down version of the generated boot.asm required to keep the compiler happy
+  * body.asm -- main functions to implement the body code
+  * ir.asm -- code related to the infrared transmitter and receiver
+  * pins.asm -- GPIO pin functionality (not accessible on the current version of the hardware)
+
+==== reflasher ====
+
+The reflasher directory contains a the code that will download a new version of the firmware onto the device.  It has the capability to replace the loader and the body code or leave the loader and just replace the body.  Individual versions of the body code are tied to specific versions of the loader, i.e. versions 1, 2, and 3 of the body code require version 1 of the loader, resulting in an overall version number of 0x0101 to 0x0103.  Inside the reflasher directory is the usb_ir.reflasher directory that is a stripped down version of the usb_ir.loader modified to execute from a different location in flash.  This allows the reflasher to be written into the upper part of flash, then the interrupt vector can be written in a single page write, and after a reboot the reflasher code will be executed instead of the old loader.  A similar procedure allows a new loader to be written to its place near the beginning of flash and then executed.  Once the new loader is in place, then a new body can be loaded immediately after the loader.  The script upgrade-usb does the actual work of communicating with the USB device and writing the pages of the reflasher, loader, and body.  The hex files containing the various versions of the loader and body can be found in the hex/ directory.
+
+===== Data =====
+
+The firmware uses one data buffer, one control buffer, a number of flag values, and stack space.  There is also some data space consumed by the USB library code.
+
+The data buffer occupies the majority of the transceiver's RAM.  During transmission, the data buffer stores the entire code sequence to be transmitted.  This allows us to disable interrupts and generate a precise carrier frequency in software.  When the receiver is enabled, the data buffer is used as a circular queue.  Received signal data is placed onto the queue by the timer interrupt handlers (see below), and pulled off the queue and sent to the host in the main program loop.
+
+The control buffer is large enough for one control packet, and is used to buffer control packets for transfers in both directions.
+
+===== Control Flow =====
+
+On startup, the firmware initializes some hardware devices (port pins, clocks, etc.), waits for USB enumeration, and then enters its main loop.
+
+The firmware's main loop performs the following functions:
+  * check for a halt condition, and reset if present
+  * check for USB traffic from the host, and handle it if present
+  * check the IR receive buffer, and send data to host if present
+
+Whenever the receiver is enabled, timer0 is running in 16-bit mode.  When an edge is detected on the timer/capture interrupt (indicating a transition in the received IR signal), the timer interrupt fires.  The interrupt handler reads the timer count, converts it into the appropriate format, and loads the data into the data buffer.  When enough data accumulates, it is sent to the host during the regular main loop processing.
+
+The timer wrap interrupt is also used with timer0.  When the timer wraps, that indicates a space in the IR signal that is longer than the maximum timer value.  The timer wrap interrupt loads the appropriate value into the data buffer.
+
+===== Weirdness =====
+
+We had to edit the auto-generated usb_desc.asm file, because PSOC Designer failed to generate the Interface Lookup Table.  Search for "TODO" in the file to see where we made the change.
+
+The firmware needs to know when the USB device has been halted, which isn't easy to find out through library calls.  To work around that, we edited the library file usb_std.asm to set a flag when it receives an EP_HALT clear.  Search for "MODIFIED" in the code to see the change.
+

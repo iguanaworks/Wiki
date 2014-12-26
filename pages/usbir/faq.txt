@@ -1,0 +1,116 @@
+
+===== Getting debug messages from igdaemon =====
+
+If you have problems, the first thing to do is get any warnings / errors from igdaemon. To do this, first stop the daemon and then run the igdaemon in a terminal. To stop the daemon (service) in Windows, run
+<code>
+net stop igdaemon
+</code>
+
+and in Linux, run
+<code>
+sudo /etc/init.d/iguanaIR stop
+</code>
+
+And then running the daemon in debug mode with the command (Linux):
+<code>
+sudo igdaemon -n -v -v -v
+</code>
+
+
+or for Windows:
+<code>
+igdaemon -v -v -v
+</code>
+
+
+
+You should see something like:
+<code>
+DEBUG: Device list 0xbff41958:
+DEBUG:   0x804f018: usb:2.5 id=0
+INFO: Worker 0 starting
+DEBUG2: o0x0000cd01
+DEBUG2: i0x
+DEBUG: 0 length recv on 0.
+DEBUG2: i0x0000dc010300
+DEBUG: Received ctl header: 0x1
+INFO: Transaction: 0x1 (12808 microseconds)
+INFO: Found device version 3
+DEBUG2: o0x0000cd0d
+ERROR: No response from device.
+ERROR: Failed to get id.
+</code>
+
+
+**N.B.** the error shown at the bottom of this output is perfectly normal, and merely means that the device has not yet been programmed with a label or id.  This is the configuration of our devices when shipped.  The id can be set to the string "fred" with the igclient command:
+<code>
+igclient --set-id fred
+</code>
+
+The reason the daemon looks for this id at startup is to create a symlink such that the device can be referred to as "fred" in commands.  This provides users with multiple devices to distinguish between the physical devices regardless of their order in the USB bus, or some transient reordering.
+
+You may get a message requesting you run
+<code>
+igdaemon --devices
+</code>
+
+and when you do so, that command notes that the device is claimed by a kernel driver.  In that case, run
+<code>
+sudo rmmod iguanair
+</code>
+
+and consider blacklisting the module in /etc/modprobe.d. See [[:usbir:IgDaemonErrors#Failedtosetdeviceconfiguration:Resourcebusy|Resource Busy]] for more details.
+----
+
+===== Will it work with my TV/DirectTV/cable/DVD player/alien mothership? =====
+
+Probably.  For receiving signals from remotes, if the remote uses 38KHz (which is the standard, but not universal) and it works with LIRC, it will  work with our transceiver. For transmission, we support a wide range of frequencies and all codes that LIRC supports. The trick is learning what to send; see [[http://lirc.org/remotes/|LIRC remote list]] for help. If our transceiver doesn't work with your device and you think it should, please email us at via [[http://iguanaworks.net/contact-iguanaworks/]].
+----
+
+===== Does it work under Windows? =====
+
+Yes. There is a 32-bit binary posted on our downloads page and the device connects to [[http://winlirc.sourceforge.net/|WinLIRC]]. Tested under Windows XP, Vista & Windows 7.
+----
+
+
+===== Can I use multiple transceivers at the same time? =====
+
+Yes.
+----
+
+
+===== Transmit IR on only the desired channels =====
+
+By default, the Iguanaworks device transmit on all channels. The total IR power is divided (roughly) evenly between the used channels. So if you want to get the maximum power on single channel, you will want to configure the device to only transmit on one channel. If you are connecting our IR Emitters directly into your USB IR Transceiver device, then you must only transmit on odd channels. To use channels 2 and 4 (dual socket only) or channels 4 (hybrid or dual socket) you must use the Stereo->Mono adapter. Without this adapter the even channels are shorted to ground and siphon away most of the IR transmit power. To avoid this, set your device to only transmit on the channels you are using.
+
+Under LIRC:
+<code>
+irsend SET_TRANSMITTERS 1 3
+</code>
+
+With igclient:
+<code>
+igclient –set-channels=0x05
+</code>
+
+Note that igclient uses the hex sum of channels, where the channels are encoded in binary. Channel !#1=1, !#2=2, !#3=4, !#4=8. To 0x05 is 1+4 = Channel !#1 and !#3.
+
+
+===== Transmit Range is Low / Can I increase the transmit range? =====
+
+Transmission range is hard to predict because it depends on both the IR transmitter and the IR receiver. Typically, we see about 10 ft (3 m) with our USB IR Transcievers using the on-board LED's. If you are using the wired IR emitters, then your range maybe a little lower with our home-built emitters and significantly lower with the SmartHome emitters. The SmartHome emitters are designed to be placed very close to the IR receiver and thus do not transmit high power. Please note that our devices are not as strong as standard remote controls because they are powered with batteries and we are limited by the current specifications of USB. 
+
+If you are not getting the transmit range you expect, a couple things to check / try:
+1. If you are using wired emitters, check that you are sending only on the odd channels, or you are using the stereo->mono adapter. See [[:#TransmitIRononlythedesiredchannels|above]] for more information.
+1. Check that you have the right IR code. If you have a device expecting a 56 kHz carrier IR signal and you transmit at 38 kHz, it often will work (depending on the receiver) but with reduced range than if you were to transmit at 56 kHz. Most devices want 38 kHz signals, some at 56 kHz, so you might want to try both.
+1. If you are using SmartHome wired emitters, consider switching to our home-built IR emitter or buying a device with the built-in LED
+
+== Can I increase the transmit range? ==
+
+Not trivially.  The current it limited by a resistor value we use to keep the transceiver's maximum current draw just below the limit for a low-power USB device.  The limit is 100mA.  Decreasing the resistor (and thus increasing range and power usage) would violate the USB specification.
+
+High-power USB devices may draw up to 500mA, but only after getting permission from the host.  It would be possible to change the firmware to declare the transceiver a high-power device and only transmit if the host can supply the power.  However, since the current transmit range is good enough for almost any application, we decided to stick with the universally compatible low-power status. If you must have more power, are using a 500mA high-power USB port and like soldering irons, contact us and we'll give you instructions. (Doing this will void warranty.)
+
+===== Does the USB IR Transceiver work with Android? =====
+
+Not yet. Basically, our software ([[http://en.wikipedia.org/wiki/Opensource|open source]] under the [[http://www.gnu.org/licenses/old-licenses/gpl-2.0.html|GPL V2]] and available via SVN [[http://iguanaworks.net/repos/iguanair/public/trunk/|here]]) needs to be ported to Android. Our software depends on relatively few libraries (libc6, udev, libpopt0 and libusb) so if these libraries work on Android, we don’t expect porting to be too hard. That said, our device is very tightly connected to libusb so getting libusb support on Android will be crucial to using our device on Android. Hopefully other people have (or are working on) porting libusb to Android. If you have any news on these ports, tips for getting our code to compile on Android, etc, please post it [[usbir/Android|here]] (you must [[/register|signup]] for a trac login in order to post). Likewise, if you have any code submissions, please [[http://iguanaworks.net/contact-iguanaworks/|contact us]].

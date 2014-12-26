@@ -1,0 +1,5 @@
+A customer's comments:
+
+  I bought a usb transceiver a couple of weeks ago and I love it. I am using it to control my laptop, and my laptop as a universal remote for my media center.
+
+  Here is a sample script for use with [[http://www.autohotkey.com|AutoHotKey]] + [[http://winlirc.sourceforge.net/|WinLIRC]] that I am using for control if you would like to play with it http://www.autohotkey.com/forum/viewtopic.php?p=414510

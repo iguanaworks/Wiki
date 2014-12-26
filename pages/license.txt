@@ -1,0 +1,5 @@
+The IguanaWorks USB Infrared Transceiver firmware and drivers are provided under the [[http://www.fsf.org/licensing/licenses/info/GPLv2.html|Gnu Public License (GPL), version 2]].  You are free to use the firmware and driver software freely within the constraints of the license. 
+
+If you choose to submit code IguanaWorks, you are giving IguanaWorks the copyright on this submitted code. Submissions received by IguanaWorks will be evaluated, and if we accept the changes, IguanaWorks will include them in our software or firmware. These changes, along with the rest of the code will be licensed under [[http://www.fsf.org/licensing/licenses/info/GPLv2.html|GPLv2]]. 
+
+If you are interested in commerical use of our hardware or software, please contact us for alternative licensing.

@@ -1,0 +1,21 @@
+
+====== Ordering / Shipping Frequently Asked Questions ======
+
+If you don't find an answer to your question here, please send an email via http://iguanaworks.net/contact-iguanaworks/.
+
+==== What's my tracking number? ====
+
+Orders are shipped via cheapest USPS method(unless higher priority was ordered), and so there is no tracking number. Express mail does include one, but standard and priority do not. If you would like a tracking number then order express mail shipping and send an e-mail to sales requesting a tracking number. Please keep in mind that tracking numbers will only track the package to the US border for international orders. The USPS tracking number does not track outside the US. 
+----
+==== When will my order ship? ====
+
+Orders typically are shipped within 2 business days of when the order is received. Google Checkout order status will not be updated, the order will always show as unshipped in Google Checkout. 
+----
+==== How long will it take for my order to get to me? ====
+
+Shipping times vary greatly from country to country. All items are shipped via USPS, so be sure to account for the normal performance of the mail service in your country. Please allow at least two weeks before contacting us to begin a lost package inquiry.  
+----
+==== What countries do you ship to? ====
+
+Orders are only accepted via PayPal, so your country must be supported by PayPal.
+----

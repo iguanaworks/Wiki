@@ -1,0 +1,128 @@
+
+====== Compile LIRC with support for Iguanaworks USB IR Transciever ======
+
+Most Linux distro’s include binaries of LIRC, but those binaries are often compiled without support for the IguanaIR driver. So, to use our device under LIRC, you may need to compile LIRC with support for our driver. Below are instructions for compiling LIRC under Fedora (RPM) and Ubuntu (DEB) based distros. Before doing this, run 
+<code>
+/usr/sbin/lircd -H ?
+</code>
+
+and see if the iguanaIR driver is listed. If it is, you don't need to recompile LIRC.
+
+
+===== Compiling under Fedora (RPM) =====
+
+Starting with Fedora 19, their LIRC binary comes with support for the iguanair driver, so you should not need to compile LIRC on Fedora 19 and later.
+
+1. Install our driver (goto [[http://iguanaworks.net/files/?OS=RPM|downloads]] section)
+1. Download the LIRC source for your version of Fedora by running the top line:
+<code>
+$ yumdownloader –source lirc
+lirc-0.9.0-8.fc17.src.rpm
+</code>
+
+1. Rebuild the RPM (do not run as root) by running the top line:
+<code>
+$ rpmbuild –rebuild lirc-0.9.0-8.fc17.src.rpm
+Installing lirc-0.9.0-8.fc17.src.rpm
+warning: user mockbuild does not exist – using root
+warning: group mockbuild does not exist – using root
+warning: user mockbuild does not exist – using root
+warning: group mockbuild does not exist – using root
+warning: user mockbuild does not exist – using root
+warning: group mockbuild does not exist – using root
+warning: user mockbuild does not exist – using root
+warning: group mockbuild does not exist – using root
+warning: user mockbuild does not exist – using root
+warning: group mockbuild does not exist – using root
+error: Failed build dependencies:
+libtool is needed by lirc-0.9.0-8.fc17.x86_64
+libirman-devel is needed by lirc-0.9.0-8.fc17.x86_64
+libftdi-devel is needed by lirc-0.9.0-8.fc17.x86_64
+alsa-lib-devel is needed by lirc-0.9.0-8.fc17.x86_64
+portaudio-devel >= 19 is needed by lirc-0.9.0-8.fc17.x86_64
+</code>
+
+1. This step will probably fail. That’s ok — install any missing -devel packages listed from the previous step by running:
+<code>
+$ sudo yum install libtool libirman-devel libftdi-devel alsa-lib-devel portaudio-devel
+</code>
+
+  where libtool, libirman-devel, etc are the missing packages listed in step 3.
+1. Try rebuilding LIRC again (again, do not run as root) by running the top line:
+<code>
+$ rpmbuild –rebuild lirc-0.9.0-8.fc17.src.rpm
+Installing lirc-0.9.0-8.fc17.src.rpm
+
+Wrote: /home/user/rpmbuild/RPMS/lirc-0.9.0-8.fc17.x86_64.rpm
+Wrote: /home/user/rpmbuild/RPMS/lirc-libs-0.9.0-8.fc17.x86_64.rpm
+Wrote: /home/user/rpmbuild/RPMS/lirc-devel-0.9.0-8.fc17.x86_64.rpm
+Wrote: /home/user/rpmbuild/RPMS/lirc-doc-0.9.0-8.fc17.x86_64.rpm
+Wrote: /home/user/rpmbuild/RPMS/lirc-remotes-0.9.0-8.fc17.x86_64.rpm
+Wrote: /home/user/rpmbuild/RPMS/lirc-debuginfo-0.9.0-8.fc17.x86_64.rpm
+</code>
+
+1. Install the binary you just created (you do not need to install all the packages you created) with:
+<code>
+sudo rpm -Uvh –force /home/user/rpmbuild/RPMS/lirc-0.9.0-8.fc17.x86_64.rpm
+</code>
+
+  where the version of LIRC (0.9.0-8 in this example) needs to match what was listed in the previous step.
+1. //Optional:// Remove files
+<code>
+rm -rf lirc-0.9.0
+</code>
+
+1. Finally, confirm newly installed LIRC package has support for iguanaIR driver:
+<code>
+$ lircd -H ?
+Driver `?’ not supported.
+Supported drivers:
+accent
+alsa_usb
+<...snip...>
+iguanaIR
+<...snip...>
+uirt2_raw
+usb_uirt_raw
+usbx
+</code>
+
+
+===== Compiling under Ubuntu (DEB) =====
+1. Add our debian [[http://iguanaworks.net/files/?OS=DEB|repository]] to your /etc/apt/sources.list file
+1. Install our software with 
+<code>
+sudo apt-get install iguanair
+</code>
+
+1. If not already added, add your distro’s source repository to you /etc/apt/sources.list (often can be done via package manager gui, depending on the distro)
+1. Get necessary packages to compile LIRC by running 
+<code>
+sudo apt-get build-dep lirc
+</code>
+
+1. Compile LIRC by running
+<code>
+sudo apt-get -b source lirc
+</code>
+
+1. The previous command will have created LIRC binaries in the parent directory. You can install that binary with
+<code>
+sudo dpkg -i lirc-0.*.deb
+</code>
+
+1. Finally, confirm newly installed LIRC package has support for iguanaIR driver:
+<code>
+$ lircd -H ?
+Driver `?’ not supported.
+Supported drivers:
+accent
+alsa_usb
+<...snip...>
+iguanaIR
+<...snip...>
+uirt2_raw
+usb_uirt_raw
+usbx
+</code>
+

@@ -1,0 +1,87 @@
+
+====== Common LIRC Errors ======
+
+===== irsend Errors =====
+For the discussion of these errors I'll refer to the name of the remote as panasonic and the button as power.  These are my values, however, you should use values specific to your lircd.conf.
+
+==== Connection refused ====
+Running irsend twice fails on the second one:
+<code>
+[[:jdunn@porkrind|~]]$ irsend send_once panasonic power
+[[:jdunn@porkrind|~]]$ irsend send_once panasonic power
+irsend: could not connect to socket
+irsend: Connection refused
+</code>
+
+
+**Explanation:** Most likely the lircd daemon died for some reason.
+
+**Solution:** Run the lircd on a console (lircd -n) and see what's happening.
+
+==== timeout ====
+Running irsend fails with:
+<code>
+[[:jdunn@porkrind|~]]$ irsend send_once panasonic power
+irsend: timeout
+</code>
+
+
+**Explanation:** lircd most likely failed to send the command.
+
+**Solution:** Run the lircd on a console (lircd -n) and see what's happening.
+
+===== lircd Errors =====
+
+==== transmission failed ====
+lircd output contains:
+<code>
+lircd: error processing command: send_once apple.conf menu
+lircd: transmission failed
+</code>
+
+
+**Explanation:** On Debian based distros, the problem is mainly due to a not installed libusb-1.0-0 (<= Lenny on Debian). See the resolved ticket #161 for more details. If the solution below does not work, this is maybe my fault, but I'm not sure why yet.  It appears to be a bug in the igdaemon, i.e. this is why it's called beta.
+
+**Solution:** On Debian Lenny and older, add the backports repository to your sources.list and install libusb-1.0-0: 
+
+sudo aptitude install libusb-1.0-0
+
+and restart the igdaemon service: 
+
+sudo invoke-rc.d iguanaIR restart
+
+That's it!
+
+The solution differs from each distros, but the goal is to install a recent libusb (typically libusb-1.0-0).
+
+If the problem persists and you can reproduce this problem on demand **please contact me** (tickets or emails welcome).
+
+==== couldn't open connection to iguanaIR daemon ====
+lircd output contains:
+<code>
+lircd-0.8.1-CVS[[:24495]]: couldn't open connection to iguanaIR daemon: No such file or directory
+lircd-0.8.1-CVS[[:24495]]: caught signal
+</code>
+
+
+**Explanation:** The lircd daemon is failing to connect to the igdaemon through a client socket.  These sockets should be located in /var/run/iguanaIR.
+
+**Solution:** Make sure the igdaemon is running.  If it's failing to start, run it on a terminal with -n -v -v -v and see what the output looks like.  This same error occurs when the iguanaIR device is **not plugged in**.
+
+===== Miscellaneous =====
+
+When debugging issues with LIRC, the LIRC log files can be helpful. Also when troubleshooting LIRC, running
+<code>
+irsend list "" ""
+</code>
+
+
+is useful as it lists the remotes the LIRC sees as being successfully configured.
+
+==== Why does irw show multiple lines when I only press the button once? ====
+
+This is actually correct behavior.  Most ir devices send many copies of the same signal and the receiving device must decide how many actions to actually execute.  See the [[:lirc]] page for a short discussion, under irw.
+
+==== Why doesn't "/etc/init.d/iguanaIR start" do anything? ====
+
+Most likely because either you have an old iguanair daemon running, or at least the init script thinks you do.  Try a restart instead of a start.

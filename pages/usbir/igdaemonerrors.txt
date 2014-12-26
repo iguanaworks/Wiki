@@ -1,0 +1,169 @@
+
+
+====== igdaemon Errors ======
+
+===== Failed to set device configuration: Resource busy =====
+Output from igdaemon contains:
+<code>
+ERROR: updateDeviceList failed: Failed to set device configuration: Resource busy
+ERROR: Check device status with igdaemon --devices
+</code>
+
+**Explanation:** Igdaemon is unable to talk the device because something else is already talking to it. As suggested, you can run
+<code>
+igdaemon --devices
+</code>
+
+to show what is talking with the Iguanaworks device. If you see something like
+<code>
+USB IR device number 4 on bus 5:
+claimed by kernel driver 'iguanair'
+</code>
+
+this means that the Linux kernel is using its kernel module called iguanair to talk to the device. This kernel module is not supported by Iguanaworks and replaces igdaemon. Assuming you want to use igdaemon and igclient, you will need to blacklist this kernel module so igdaemon can talk to the device.
+
+**Solution:** Create the file "/etc/modprobe.d/iguana-blacklist.conf" with the content of
+<code>
+blacklist iguanair
+</code>
+
+Note you will need root privileges to create this file.
+
+
+===== Failed to get id (1)=====
+Output from igdaemon contains:
+<code>
+INFO: Found device version 0x308
+INFO: Timeout while waiting for response from device.
+INFO: Failed to get id. Device may not have one assigned.
+</code>
+
+**Explanation:** This may not actually be a problem.  When the daemon starts communicating with a device it attempts to read the id so that you can refer to the device via a user-defined name instead of number assigned when the device is plugged in.  If the device id is set to "" (ie blank), then you will get the message. 
+
+**Solution** 
+If that is the case, you can ignore the message or set the device id by running
+<code>
+igclient --set-id hello
+</code>
+
+
+===== Failed to get id (2)=====
+If the output from igdaemon looks like
+<code>
+INFO: Found device version 0x308
+INFO: Timeout while waiting for response from device.
+INFO: Failed to get id.  Device may not have one assigned.
+ERROR: can't read from USB device: Failed to read (interrupt end point): Input/output error
+</code>
+
+
+**Explanation:** Instead having a blank id (see above) you have a corrupted device id. This sometimes happens when setting the device ID or when reflashing the device goes wrong. When this happens, querying the device ID crashes the device and since igdaemon runs this query when a device is plugged in, the device appears dead. Igdaemon will show the message above, but all subsequent igclient / LIRC commands (e.g. igclient --get-version) will fail. 
+
+**Solution:** First stop igdaemon. The start igdaemon in a command window with the option –no-ids:
+
+<code>
+sudo igdaemon -nvvv –no-ids      (Linux)
+igdaemon.exe -v -v -v –no-ids    (Windows)
+</code>
+
+This tells igdaemon not to ask devices for their id. That should stop the device from crashing when you plug it in. So unplug the device and plug it back in. In a second command window run:
+<code>
+igclient –set-id=something          (Linux)
+igclient.exe –set-id=something      (Windows)
+</code>
+
+That will reset the device id to ‘something’ (pick whatever makes sense. Assuming you get a success on that command,  you should be good to go. Stop igdaemon and start it back normally.
+
+
+===== failed to bind server socket: No such file or directory =====
+Output from igdaemon contains:
+<code>
+ERROR: failed to bind server socket: No such file or directory
+INFO: Worker 0 exiting
+</code>
+
+**Explanation:** Most likely the directory /var/run/iguanaIR does not exist.  It should be created by the init script though.
+
+**Solution:** For now you can add a line to the init script (usually located at /etc/init.d/iguanaIR) to create the directory and set its permissions (rw for user and group, owned by iguanair).
+
+===== failed to bind server socket: Permission denied =====
+Output from igdaemon contains:
+<code>
+ERROR: failed to bind server socket: Permission denied
+INFO: Worker 0 exiting
+</code>
+
+
+**Explanation:** The daemon is correctly running as iguanair, or at least a non-privileged user, and does not have permission to create sockets in /var/run/iguanaIR.
+
+**Solution:** Check the permissions on the /var/run/iguanaIR directory, and see the previous solution.
+
+===== ERROR: updateDeviceList failed =====
+Output from igdaemon contains:
+<code>
+ERROR: updateDeviceList failed: usb_claim_interface failed 0: could not claim interface 0: Operation not permitted
+ERROR: scan failed.
+</code>
+
+
+**Explanation:** The daemon is correctly running as iguanair, or at least a non-privileged user, and does not have permission to claim the USB device interface.  Currently this appears for people using udev 071 or older, and the cause appears to be that the provided iguanaIR.rules file does not properly set the device ownership.
+
+**Solution:** Until someone afflicted with this problem comes up with a solution my suggestion is to run the igdaemon as root to avoid this permission problem.  To do this you'll need to modify the init script.  For example, change:
+<code>
+            START="daemon --user=iguanair $IGPATH $IGUANAIR_OPTIONS -l $LOGFILE"
+</code>
+
+to
+<code>
+            START="daemon --user=root $IGPATH $IGUANAIR_OPTIONS -l $LOGFILE"
+</code>
+
+No this is not a good solution, however, without an afflicted machine I can't debug it, and so far other people have just switched to running the daemon as root.
+
+The problem may be resolved by adding a new rule to udev or change the existing one. To do this, create a file (or find the correct path) /etc/udev/rules.d/z60-iguanair.rules with the following line in it:
+<code>
+            SUBSYSTEM=="usb_device", SYSFS{idVendor}=="1781", SYSFS{idProduct}=="0938", MODE="0660", OWNER="iguanair", GROUP="iguanair"
+</code>
+
+
+Then, reload udev rules by running:
+<code>
+            sudo udevadm control --reload_rules
+</code>
+
+
+Unplug, plug your Iguana IR dongle, and verify that the new permissions are correct.
+
+
+===== ERROR: GLIBC 2.15 not found (Debian) =====
+
+Output of igdaemon contains something similar to
+<code>
+igdaemon: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.15′ not found (required by igdaemon)
+</code>
+
+
+**Explanation:** GLIBC versions on some versions of Ubuntu and Debian are not binary compatible. Our .deb binary packages are compiled on Ubuntu machines and occasionally have a compatibility issue on Debian machines. 
+
+**Solution:** Compile the iguanaIR package instead of using our binary.
+
+First, add
+<code>
+deb-src http://iguanaworks.net/downloads/debian source/
+</code>
+
+to your repository list. Then, run
+<code>
+sudo apt-get update
+sudo apt-get build-dep iguanair
+sudo apt-get -b source iguanair
+</code>
+
+That will compile the iguanair software package in whatever directory you are in. Once it is done, install it with
+<code>
+sudo dpkg -i iguanaIR-<version>.deb
+</code>
+
+
+
+

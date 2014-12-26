@@ -1,0 +1,35 @@
+====== Welcome to the IguanaWorks Support and Documentation Project ======
+
+Here you will find technical information regarding the IguanaWorks [[http://iguanaworks.net/products/usb-ir-transceiver/|USB IR Transceiver]] and [[http://iguanaworks.net/products/series-transceiver/|Serial IR Transceiver]] in additional to basic information about ordering and shipping. If you are having a problem with your IR Transceiver, you can either [[http://iguanaworks.net/contact-iguanaworks/|contact us]] or you create a [[http://iguanaworks.net/projects/IguanaIR/query|support ticket]] (you must [[http://iguanaworks.net/projects/IguanaIR/register|register]] first). 
+
+As with all IguanaWorks software, the software and firmware are open, according to our [[license|license terms]]. Our Subversion software repository is available [[http://iguanaworks.net/repos/iguanair/public/trunk/|here]] for browsing or checkout.
+
+===== General IguanaWorks Information: =====
+  * [[:orders:faq|Ordering : Shipping FAQ]] -- Frequently Asked Questions about purchasing.
+  * [[http://iguanaworks.net/projects/IguanaIR/query|Tickets]] -- Our ticket system for tracking the status of bugs, feature requests, etc. You must [[http://iguanaworks.net/projects/IguanaIR/register|register]]  before you can create your own tickets.
+
+
+
+===== USB IR Transceiver =====
+
+The IguanaWorks USB IR Transceiver is a simple USB device that can communicate with most home electronics and remote controls via infrared (IR).  The transceiver can both send and receive IR codes, and is fully compatible with [[http://www.lirc.org/|LIRC]] under Linux and [[http://winlirc.sourceforge.net/|WinLIRC]] under windows.  Unlike serial devices, the USB transceiver does not require a kernel module, and multiple transceivers can be in use at the same time.  Each transceiver can transmit on up to 4 independent channels (dual socket version only). The transmitter is high-power compared to most serial devices, with a range of 10 ft.  We support [[http://www.lirc.org/|LIRC]] and [[http://winlirc.sourceforge.net/|WinLIRC]]. Basic overview and purchasing information available [[http://iguanaworks.net/products/usb-ir-transceiver/|here]].
+
+  * [[:usbir:GettingStarted|Getting Started]] -- Start here if you own the device and want to get it working (with LIRC).
+  * [[:usbir:faq|FAQ]] -- Frequently Asked Questions about the USB IR Transceier
+  * [[:usbir:IgDaemonErrors|Common IgDaemon Errors]] -- Common IgDaemon errors and solutions
+  * [[:usbir:CompileLIRC|Compile LIRC]] -- Instructions for compiling LIRC with support for Iguanaworks USB IR Transceiver
+  * [[:usbir:LircErrors|Common LIRC Errors]] -- Common LIRC errors and solutions
+  * [[http://iguanaworks.net/files|Download Drivers]] -- On this page you'll find the drivers for our usb devices in source form and packaged binaries (rpm and deb).
+  * [[:usbir:Android|Android]] -- Nothing yet. Please post on Android and Iguanaworks USB IR Transceiver here.
+  * User-Contributed Wiki's / Howto's:
+    * [[:usbir:IpodOrIphoneForWindows|IpodOrIphoneForWindows]] -- Controlling Windows using an iPod Touch or iPhone
+    * [[usbir/AutoHotKey|AutoHotKey]] -- A users comments / code using Iguanaworks device with WinLIRC and [[http://www.autohotkey.com/|Autohotkey]].
+
+===== Advanced Technical Information on USB IR Transceiver =====
+  * [[:hardware|Hardware]] -- Hardware description, Schematics and Layout
+  * [[:firmware|Firmware]] -- Firmware Overview
+  * [[:driver|Driver]] -- Device Driver Overview 
+  * [[:igclient|Sample Client]] -- Overview of the Sample Client, igclient
+  * [[:hwProtocol|HW Protocol]] -- Hardware-to-Driver Protocol Specification
+  * [[:driverProtocol|Driver Protocol]] -- Driver-to-Application Protocol Specification
+

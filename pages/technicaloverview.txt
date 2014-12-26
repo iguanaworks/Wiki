@@ -1,0 +1,16 @@
+==== Technical Overview of the Iguanaworks USB IR Transceiver ====
+
+All communication with the IR Transceiver is initialized by the host computer over USB. 
+
+Here's what happens when you want to transmit an IR signal with the Iguanaworks USB IR Transceiver:
+
+1. Tell LIRC / WinLIRC I want to transmit the 'MUTE' code
+1. LIRC / WinLIRC looks up 'MUTE' and turns that code into a series of pulses (IR on) and spaces (no IR)
+1. LIRC / WinLIRC talks to the Iguanaworks Daemon (igdaemon) and tells it that it wants to transmit a series of pulses and spaces.
+1. Igdaemon converts that series of pulses and spaces into a compressed transmit sequence our devices understands (see [[:hwProtocol|hwProtocol]])
+1. Igdaemon sends transmit sequence to Iguanaworks IR Transceiver over USB
+1. Firmware on Iguanaworks USB IR Transceiver receives command and issues acknowledgement over USB.
+1. Firmware on Iguanaworks processes command and transmits IR in specified sequence. Device is blocking while transmitting.
+1. Once device finishes IR Transmission, it can process further commands, etc.
+
+

@@ -1,0 +1,18 @@
+====== Iguanaworks Serial Transceiver ======
+
+IR Receiver and High Powered Transmitter for use with LIRC / WinLIRC via its serial driver. Not much technical detail as device has no 'brain' or firmware,etc. [[http://iguanaworks.net/wp-content/uploads/products/series-transceiver/serial-schematic.pdf|Schematic]] and [[http://dev.iguanaworks.net/wp-content/uploads/2011/08/serial-layout.pdf|Layout]] available to those interested. 
+
+===== Specifications =====
+
+  * Standard Serial Transmitter / Receiver for LIRC / WinLIRC
+  * ~30 ft transmit range using high power transmit circuit
+  * Standard 38 kHz IR receiver
+
+
+===== FAQ =====
+
+  * [[:serial#WillyourdeviceworkwithaUSB->SerialAdapter|Will your device work with a USB->Serial Adapter?]]
+
+ === Will your device work with a USB->Serial Adapter? ===
+
+No. It will not. Our serial device does not talk RS232, as required by USB->Serial adapters, and doesn't even use the Transmit (TX) and Receive (RX) pins, but the DCD and DTR lines. Why? That's the standard for the LIRC serial devices (see [[http://www.lirc.org/transmitters.html|Serial Port Transmitters]] and [[http://www.lirc.org/receivers.html|Serial Port Receivers]] if you really want all the details).

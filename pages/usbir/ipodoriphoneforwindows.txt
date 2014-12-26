@@ -1,0 +1,53 @@
+
+
+===== Controlling Windows using an iPod or iPhone =====
+
+author:Andreas Mergner
+This is an initial version that needs to be edited for more detailed and correct info.  Please keep this in mind!  :)
+
+I have recently used my iPod Touch to control my Windows PC and IR devices with the help of Iguana Works USB IR transceiver, a couple of pieces of free PC software, and one very inexpensive ($7 total with the Event Ghost upgrade) Apple App.  
+
+I will list links to all of the software needed below:
+
+**WinLIRC** http://winlirc.sourceforge.net
+
+**Event Ghost** http://www.eventghost.org
+
+**TouchControl iOS App** http://www.touchapptech.com
+
+**...and of course the Iguana Works dll** http://iguanaworks.net/downloads.php?distro=win
+
+I was able to set up all of these to work using just their help files.  I will walk you through it just in case you can't figure it out.
+
+**First download the Iguana Works Windows software and run the exe.**
+
+
+**Plug in your Iguana Works USB IR transceiver.**
+
+
+**Next install WinLIRC**.  (Good walk through here: http://winlirc.sourceforge.net/usageguide.html ) After it is installed, you will need to find the remote codes for the device you want to control.  This may be the most difficult part of the process!  I first tried to use the IRRecord functionality and didn't have any luck with it.  I would recommend looking around for remote codes on the web.  I have a couple of links, but there are probably many more.  (If anyone has more to add here, please do so.)  If anything, get the remote codes for a device that is more complex/higher number than yours.  Likely it will have all your functions, plus a few extra you don't need.  
+
+http://lirc.sourceforge.net/remotes/
+[[:one|other link I have bookmarked at home]]
+
+Looks like you might be able to use this app to convert codes found elsewhere to LIRC, but have not tried it.  http://www.remotecentral.com/cgi-bin/files/rcfiles.cgi?kw=makehex%2Ezip  You may need to look in the remote central forums for more help.  Here is an interesting thread, for example: http://www.remotecentral.com/cgi-bin/mboard/rc-discrete/thread.cgi?keywords=4225&highlight=lirc#731074
+
+Run WinLIRC.  You will now need to select the Iguanaplugin.dll, configure it (select one of the IR transmitters), browse to the config file you downloaded.  If you click OK and you get to the next screen without an error, you are golden.  Point the IR transmitter at your device, select a remote and a function, then press TEST.  Hopefully your device does something!  Things to check are that you did everything in the right order.  You might want to close WinLIRC and unplug/replug the USB IR transceiver.  
+
+**Install Event Ghost.**  Also run it.  Go to the Configuration pull down menu, select Plugins and then add the WinLIRC plugin.  Now you can right click on the Configuration Tree, select add folder.  Name it whatever you want.  Right click the folder and Add Macro.  You can then select what you want the macro to do.  Select VLC and then select Start, then OK.  There are tons of things you can do, including multiple actions in the macros.  You can select the macro and then press the green triangle at the top of the screen to test that VLC opens (assuming you have VLC).  
+
+**Install Touch IR Server on your PC.**  You will need to configure it to get EventGhost to work.  Find the PC's IP address by going to the Start menu, then Run, then type cmd.  Then type ipconfig and it will give you the PC's IP address.  Use that along with the default port for Event Ghost.  Now, select a location and add a new activity.  You then can add the macro device to the activity.  Add a button, specifying its name (Start VLC) and it as an EventTrigger type and then click ok.  Then double click on the button and it should ask what text to send to EventGhost...or something like that.  Enter in "start vlc", then click Test.  You should be able to go to EventGhost and look at the log on the left of the window and find "TouchControl:start vlc" or something similar.  Drag that onto your macro titled VLC:start (or similar).  Now try the Test button again in Touch IR Server and it should start VLC.  Click ok and then you can create a simple remote screen for you iPod.  Click "Design Layout" (or similar) in Touch IR Server.  You can drag your button to that remote screen.  It will prompt you for an image to display as the button.  Click save, then go to the pulldown menu to Export and save the entire remote. 
+
+**Install TouchControl on your iPod/iPhone.**  Buy the EventTrigger add on.  Go to settings in TouchControl on your iPod.  You will then enter the PC's IP address from before and then default ports.  (The latest version of TouchControl & Touch IR Server supports ZeroConfig networking if you have Bonjour For Windows installed on your PC, which will do all of the network config for you.)  You may then need to configure Windows Firewall to exclude one of those ports (I forget which).  On your iPod's TouchControl settings, make sure it is off demo mode.  You should then be able to go to the location and activity to find your new remote screen.  Hopefully pressing the Start VLC button will cause VLC to open on your PC.
+
+Now, to control an IR device, in EventGhost create a macro and select WinLIRC and select SEND_ONCE.  Select the remote and the code you want.  Then create a button in Touch IR Server and test it.  Use the EventGhost log to drag that trigger to your macro.  Then update the remote on Touch IR Server on your PC and your iPod.  This process will become easier once you do it a few times.
+
+Hopefully this was helpful.  Make sure to check out the documentation and forum of all these pieces of software!  There is a ton more info that I cannot hope to include here.  If you want to control VLC properly, you will want to visit the EventGhost forum in the plugins section.  You need that new version of the plugin: http://www.eventghost.org/forum/viewtopic.php?f=9&t=693&start=30
+
+You can email me at: insane (remove this and spaces) epp @ yahoo dot com
+
+Andreas Mergner
+
+
+
+

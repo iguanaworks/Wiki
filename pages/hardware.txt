@@ -1,0 +1,33 @@
+====== License ======
+
+Hardware information is provided for personal use only.  IguanaWorks Incorporated retains the copyright on all information presented here.
+
+====== USB Compliance ======
+
+The IguanaWorks USB IR transceiver is a low-speed, low-power USB peripheral device.  It meets all the electrical and mechanical specifications for such a device.
+
+The device is not certified USB compliant, because that costs money and is basically impossible to do for an open-source device, since it evolves too quickly.  However, we have tested it carefully for compliance with the specification.
+
+====== Hardware Description ======
+
+The transceiver is based on the Cypress CY7C63813-PXC USB microcontroller, a member of the enCoRe-II family of chips.  The CY7C63813 includes an M8C microcontroller, 8KB of flash memory, 256 bytes of RAM, a 16-bit timer, and a USB device controller, among other features.  The chip also contains an internal voltage regulator and oscillator, so it doesn't require any external components.  The clock runs at 24MHz, and is synchronized by hardware to the host machine's USB clock.
+
+The timer/capture input is connected to the output of a TSOP32238 IR receiver module.  The receiver removes the 38KHz carrier, leaving only the data signal.  We use the capture hardware in the CY7C63813 to read the timing of the IR signal.
+
+IR Transmission is done by using an amplifier to use the power limit of a low-power USB device (<100mA) to power an IR LED (internal or external). The carrier for the IR signal is generated in the firmware and is adjustable between 25kHz and 150kHz.  The granularity of the carrier frequency varies across its range, but the driver will use nearest frequency to the one specified.
+
+The transmitter circuit consists of a TSAL6400 IR LED, which is matched well to most home electronics.  We use a simple amplifier circuit to boost the transmit power up to the limit for a low-power USB device (<100mA).  That's typically plenty of power; our tests were successful out to 20 ft.  You could get more range by substituting a TSAL6100, which produces a tighter beam.  On the transmit side, 
+
+===== Different Versions of the Device =====
+
+There are 4 different versions of the USB IR Transceiver: 
+
+  * Dual LED: Has 2 IR LED's inside the enclosure on the right and left side for transmitting IR. IR receiver on-board opposite the USB connector.
+
+  * Dual Socket: Has no on-board IR LED's, but instead two 3.5 mm stereo sockets, each capable of driving two IR LEDs. No current limiting resistor is needed when connecting the socket to an IR LED. The right channel on the connector (TIP) is channel 1 (or 3) signal. The left channel (RING) is channel 2 (or 4). The ground on the connector (COMMON) is our ground. Channel pins (tip) is positive (anode). Socket is compatible with various IR Blasters / IR Emitters. If you use a mono plug / single-channel IR blaster directly into our device, it will short out channel 2 (or 4). This does not damage anything, but greatly reduces the power going into channel 1 (or 3). You can tell our device not to transmit on channels 2 (or 4) to avoid this problem. IR receiver opposite the USB connector.
+
+  * Hybrid: Has one Socket and one on-board LED. IR receiver on-board opposite the USB connector.
+
+  * Socket Receive:  Does not contain the on-board IR receiver. Instead has 3.5 mm stereo socket for connecting external IR receiver. The right channel (TIP) is for the received (demoduled) IR signal. The left channel (RING) is 5V for powering the IR Receiver. The ground on the connector (COMMON) is our ground. A second 3.5 mm stereo socket is for sending IR, and is wired the same as in the Dual Socket and Hybrid devices.
+
+
