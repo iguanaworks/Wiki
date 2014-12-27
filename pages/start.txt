@@ -6,9 +6,7 @@ As with all IguanaWorks software, the software and firmware are open, according 
 
 ===== General IguanaWorks Information: =====
   * [[:orders:faq|Ordering : Shipping FAQ]] -- Frequently Asked Questions about purchasing.
-  * [[http://iguanaworks.net/projects/IguanaIR/query|Tickets]] -- Our ticket system for tracking the status of bugs, feature requests, etc. You must [[http://iguanaworks.net/projects/IguanaIR/register|register]]  before you can create your own tickets.
-
-
+  * [[https://www.iguanaworks.net/osTicket/index.php|Support Ticketing System]] -- Our ticket system for sales and support questions.
 
 ===== USB IR Transceiver =====
 
