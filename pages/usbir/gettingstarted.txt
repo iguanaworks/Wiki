@@ -13,6 +13,19 @@ This guide will help you install and configure the necessary software so use the
   - Getting a valid lircd.conf.
   - Using it all.
 
+===== Step 0: Shortcut =====
+
+On most modern distros, there is built in support for our device! This uses the iguanair kernel module. Simply plug in the USB IR Transceiver and configure LIRC to use the 'default' driver and you should be good to go. If not, make sure the kernel module is loaded by running
+<code>
+sudo modprobe iguanair
+</code>
+and that you haven't installed our software (Step 1). If you have our software, you will need to stop it with
+<code>
+sudo service iguanair stop
+</code> before using the kernel driver. 
+
+If this doesn't work for you, it is harder to debug using the kernel driver, so in that situation, we recommend using our driver by following the steps below.
+
 ===== Step 1: Installing iguanaIR =====
 
 Install the iguanair software package. You can get the software and installation instructions at [[http://iguanaworks.net/downloads.php|downloads page]]. We provide rpm and deb software repositories in addition to direct links to the .deb and .rpm files. A source tarball is also available. We recommend adding our repository to your list of source repositories. Then you can get the iguanair package installed by running (as root or with sudo) the command:
@@ -63,7 +76,19 @@ make -C build
 
 ==== Start igdaemon ====
 
-Our packages have only been tested on Fedora and Ubuntu systems, but should be compatible with most rpm or deb-based distributions. If you have to make changes for your specific distribution, please let us know and we'll include the details in our packages.  Once the software is installed, connect the device (or reconnect it if you plugged it in before) and start the igdaemon.  This should be as simple as running as root the command:
+Our packages have only been tested on Fedora and Ubuntu systems, but should be compatible with most rpm or deb-based distributions. If you have to make changes for your specific distribution, please let us know and we'll include the details in our packages.  
+
+Before proceeding, we will need to disable the kernel driver as it takes exclusive control over the USB IR Transceiver. Run
+<code>
+sudo rmmod iguanair
+</code>
+
+This will revert on a reboot. To permanently disable the kernel driver create a new file /etc/modprobe.d/iguanair.conf with the content:
+<code>
+blacklist iguanair
+</code>
+
+With not done and the software is installed, connect the device (or reconnect it if you plugged it in before) and start the igdaemon.  This should be as simple as running as root the command:
 <code>
 sudo /etc/init.d/iguanaIR start
 </code>
