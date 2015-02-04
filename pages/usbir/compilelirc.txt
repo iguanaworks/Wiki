@@ -108,7 +108,7 @@ sudo apt-get -b source lirc
 
 1. The previous command will have created LIRC binaries in the parent directory. You can install that binary with
 <code>
-sudo dpkg -i lirc-0.*.deb
+sudo dpkg -i lirc_0.*.deb
 </code>
 
 1. Finally, confirm newly installed LIRC package has support for iguanaIR driver:
