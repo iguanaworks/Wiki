@@ -204,6 +204,10 @@ TRANSMITTER_LIRCD_CONF=""
 TRANSMITTER_LIRCD_ARGS=""
 </code>
 
+If you are NOT using the kernel module, but you installed iguanaIR yourself, then you have to disable the kernel module usage from LIRC conf too (otherwise you will get "irsend: could not connect to socket" while trying to send IR commands):
+<code>
+LOAD_MODULES="false"
+</code>
 
 
 and if you want to specify which device to use (if you have multiple), you will also need to add to hardware.conf:
