@@ -35,17 +35,17 @@ Install the iguanair software package. You can get the software and installation
   - Add our package repository to your sources list by running one of the following three commands based on your computer architecture. 
   * i386
 <code>
-echo "deb http://iguanaworks.net/downloads/debian binary-i386/" %7Csudo tee /etc/apt/sources.list.d/iguanaworks.list>/dev/null
+echo "deb http://iguanaworks.net/downloads/debian binary-i386/" | sudo tee /etc/apt/sources.list.d/iguanaworks.list>/dev/null
 </code>
 
   * amd64
 <code>
-echo "deb http://iguanaworks.net/downloads/debian binary-amd64/" %7Csudo tee /etc/apt/sources.list.d/iguanaworks.list>/dev/null
+echo "deb http://iguanaworks.net/downloads/debian binary-amd64/" | sudo tee /etc/apt/sources.list.d/iguanaworks.list>/dev/null
 </code>
 
   * Raspberry Pi (raspbian)
 <code>
-echo "deb http://iguanaworks.net/downloads/debian binary-rasp/" %7Csudo tee /etc/apt/sources.list.d/iguanaworks.list>/dev/null
+echo "deb http://iguanaworks.net/downloads/debian binary-rasp/" | sudo tee /etc/apt/sources.list.d/iguanaworks.list>/dev/null
 </code>
 
   - Update your package list and install our package by running
