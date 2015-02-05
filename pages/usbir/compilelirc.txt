@@ -89,29 +89,30 @@ usbx
 
 
 ===== Compiling under Ubuntu (DEB) =====
-1. Add our debian [[http://iguanaworks.net/files/?OS=DEB|repository]] to your /etc/apt/sources.list file
-1. Install our software with 
+  * Add our debian [[http://iguanaworks.net/files/?OS=DEB|repository]] to your /etc/apt/sources.list file
+
+  * Install our software with 
 <code>
 sudo apt-get install iguanair
 </code>
 
-1. If not already added, add your distro’s source repository to you /etc/apt/sources.list (often can be done via package manager gui, depending on the distro)
-1. Get necessary packages to compile LIRC by running 
+  * If not already added, add your distro’s source repository to you /etc/apt/sources.list (often can be done via package manager gui, depending on the distro)
+  * Get necessary packages to compile LIRC by running 
 <code>
 sudo apt-get build-dep lirc
 </code>
 
-1. Compile LIRC by running
+  * Compile LIRC by running
 <code>
 sudo apt-get -b source lirc
 </code>
 
-1. The previous command will have created LIRC binaries in the parent directory. You can install that binary with
+  * The previous command will have created LIRC binaries in the parent directory. You can install that binary with
 <code>
 sudo dpkg -i lirc_0.*.deb
 </code>
 
-1. Finally, confirm newly installed LIRC package has support for iguanaIR driver:
+  * Finally, confirm newly installed LIRC package has support for iguanaIR driver:
 <code>
 $ lircd -H ?
 Driver `?’ not supported.
