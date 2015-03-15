@@ -8,6 +8,8 @@ Most Linux distro’s include binaries of LIRC, but those binaries are often com
 
 and see if the iguanaIR driver is listed. If it is, you don't need to recompile LIRC.
 
+For usage and configuration instructions of LIRC, see http://www.iguanaworks.net/wiki/doku.php?id=lirc.
+
 
 ===== Compiling under Fedora (RPM) =====
 
