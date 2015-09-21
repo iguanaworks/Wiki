@@ -101,7 +101,7 @@ Note that igclient uses the hex sum of channels, where the channels are encoded 
 Transmission range is hard to predict because it depends on both the IR transmitter and the IR receiver. Typically, we see about 10 ft (3 m) with our USB IR Transcievers using the on-board LED's. If you are using the wired IR emitters, then your range maybe a little lower with our home-built emitters and significantly lower with the SmartHome emitters. The SmartHome emitters are designed to be placed very close to the IR receiver and thus do not transmit high power. Please note that our devices are not as strong as standard remote controls because they are powered with batteries and we are limited by the current specifications of USB. 
 
 If you are not getting the transmit range you expect, a couple things to check / try:
-1. If you are using wired emitters, check that you are sending only on the odd channels, or you are using the stereo->mono adapter. See [[:#TransmitIRononlythedesiredchannels|above]] for more information.
+1. If you are using wired emitters, check that you are sending only on the odd channels, or you are using the stereo->mono adapter. See [[faq#transmit_ir_on_only_the_desired_channels|above]] for more information.
 1. Check that you have the right IR code. If you have a device expecting a 56 kHz carrier IR signal and you transmit at 38 kHz, it often will work (depending on the receiver) but with reduced range than if you were to transmit at 56 kHz. Most devices want 38 kHz signals, some at 56 kHz, so you might want to try both.
 1. If you are using SmartHome wired emitters, consider switching to our home-built IR emitter or buying a device with the built-in LED
 
