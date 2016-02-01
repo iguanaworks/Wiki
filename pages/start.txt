@@ -21,8 +21,7 @@ The IguanaWorks USB IR Transceiver is a simple USB device that can communicate w
   * [[:usbir:Android|Android]] -- Nothing yet. Please post on Android and Iguanaworks USB IR Transceiver here.
   * User-Contributed Wiki's / Howto's:
     * [[:usbir:IpodOrIphoneForWindows|IpodOrIphoneForWindows]] -- Controlling Windows using an iPod Touch or iPhone
-    * [[usbir/AutoHotKey|AutoHotKey]] -- A users comments / code using Iguanaworks device with WinLIRC and [[http://www.autohotkey.com/|Autohotkey]].
-
+    * [[http://www.vintage-art-and-posters.com/IR-Pogo/|Guide to setting up Iguanaworks IR device with Seagate Dockstar or Pogo-Plug family of ARM devices]]
 ===== Advanced Technical Information on USB IR Transceiver =====
   * [[:hardware|Hardware]] -- Hardware description, Schematics and Layout
   * [[:firmware|Firmware]] -- Firmware Overview
@@ -30,4 +29,3 @@ The IguanaWorks USB IR Transceiver is a simple USB device that can communicate w
   * [[:igclient|Sample Client]] -- Overview of the Sample Client, igclient
   * [[:hwProtocol|HW Protocol]] -- Hardware-to-Driver Protocol Specification
   * [[:driverProtocol|Driver Protocol]] -- Driver-to-Application Protocol Specification
-
