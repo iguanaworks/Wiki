@@ -188,7 +188,7 @@ received 7 signal(s):
 
 and so on.  What we can see from this output is that the device was idle for around 0.4 seconds before a 6.4 millisecond header pulse was detected.  All the numbers printed above are times in microseconds.  This is not actually the raw data received from the USB device, but the daemon translates that rather odd format to microsecond pulses and spaces.  If this command fails, please check for the error on the TroubleShooting page.
 
-===== Step 5: Installing and Testing LIRC =====
+===== Step 4: Installing and Testing LIRC =====
 
 You have already installed the lirc package in step 2. However, LIRC needs a iguanair driver which you
 most likely need to add. The procedure for adding the iguana driver is different depending on
@@ -291,11 +291,11 @@ Note: We recommend that you only send on the channels that you are using. Partic
 
 Once lircd is tested with irsend command we can be certain that the igdaemon and lircd daemon are both working, and properly communicating.  Congratulations, the iguanaIR specific stuff is done.
 
-===== Step 4: Getting a LIRC remote onfiguration =====
+===== Step 5: Getting a LIRC remote onfiguration =====
 
 As stated above, I'd suggest downloading your lirc configuration from https://sourceforge.net/projects/lirc-remotes/.  Even if you can start with a configuration where only a few buttons work that is //far// preferable to starting from scratch.  But, assuming that you can't find such a configuration file check our page about [[:lirc]], and why I'm not real fond of it.  But it's not like we have another option.
 
-===== Step 5: Using it all =====
+===== Step 6: Using it all =====
 
 So most likely you want your remote to work with mplayer, or mythtv.  This is not my department, but a little is said on the [[:lirc]] page.
 
