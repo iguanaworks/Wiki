@@ -1,11 +1,11 @@
 
 ====== Getting Started with the Iguanaworks USB IR Transceiver (Linux) ======
 
-{{http://www.iguanaworks.net/wp-content/uploads/products/usb-ir-transceiver/USB-LED-300x113.jpg}}
+{{https://www.iguanaworks.net/wp-content/uploads/products/usb-ir-transceiver/USB-LED-300x113.jpg}}
 
 Unlike our serial version of this product, to use and communicate with the USB device, a kernel driver or the igdaemon software must be used. The igclient program (or libiguanaIR.so library) communicates with our device through the igdaemon, but most people can use our devices with LIRC without installing our software.
 
-This guide will help you install and configure the necessary software to use the USB IR Transceiver. If you've read through this and still have questions please submit a [[http://iguanaworks.net/projects/IguanaIR/newticket|Support Ticket]]
+This guide will help you install and configure the necessary software to use the USB IR Transceiver. If you've read through this and still have questions please submit a [[https://www.iguanaworks.net/projects/IguanaIR/newticket|Support Ticket]]
 
   - Installing the iguanaIR software (daemon and client).
   - Testing iguanaIR using igclient.
@@ -60,7 +60,7 @@ if you need to use the iguana driver for other reasons:
 
 ===== Step 2: Installing iguanaIR =====
 
-Install the iguanair software package. You can get the software and installation instructions at [[http://iguanaworks.net/downloads.php|downloads page]]. We provide rpm and deb software repositories in addition to direct links to the .deb and .rpm files. A source tarball is also available. We recommend adding our repository to your list of source repositories. Then you can get the iguanair package installed by running (as root or with sudo) the command:
+Install the iguanair software package. You can get the software and installation instructions at [[https://iguanaworks.net/downloads.php|downloads page]]. We provide rpm and deb software repositories in addition to direct links to the .deb and .rpm files. A source tarball is also available. We recommend adding our repository to your list of source repositories. Then you can get the iguanair package installed by running (as root or with sudo) the command:
 
 ==== Debian-based Distros ====
 
@@ -231,7 +231,7 @@ Has the iguanaIR support compiled in lirc. Check with
 See above for configuring LIRC
 
 ==== Debian and Ubuntu (lirc version 0.9.0) ====
-I will not go into the details of installing LIRC.  Please refer to http://lirc.org for such details.  The one thing I will say about LIRC installation is that you **must** make sure that your version of LIRC supports the iguanaIR driver.  Most linux distros do not LIRC with support for our driver, altough newer versions of Fedora do.  Take a look at  [[http://iguanaworks.net/2012/compile-lirc-on-fedora-rpm/|here for rpm]] and [[http://iguanaworks.net/2012/compile-lirc-into-deb-package/|here for deb]] for compiling LIRC with our driver the easy way.  To check if you have our driver compiled into LIRC, run:
+I will not go into the details of installing LIRC.  Please refer to http://lirc.org for such details.  The one thing I will say about LIRC installation is that you **must** make sure that your version of LIRC supports the iguanaIR driver.  Most linux distros do not LIRC with support for our driver, altough newer versions of Fedora do.  Take a look at  [[https://www.iguanaworks.net/2012/compile-lirc-on-fedora-rpm/|here for rpm]] and [[https://www.iguanaworks.net/2012/compile-lirc-into-deb-package/|here for deb]] for compiling LIRC with our driver the easy way.  To check if you have our driver compiled into LIRC, run:
 <code>
 [[:user@server|~]]$ lircd -H '?' | grep iguana
 </code>
