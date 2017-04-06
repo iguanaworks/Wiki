@@ -17,7 +17,7 @@ The IguanaWorks USB IR Transceiver is a simple USB device that can communicate w
   * [[:usbir:IgDaemonErrors|Common IgDaemon Errors]] -- Common IgDaemon errors and solutions
   * [[:usbir:CompileLIRC|Compile LIRC]] -- Instructions for compiling LIRC with support for Iguanaworks USB IR Transceiver
   * [[:usbir:LircErrors|Common LIRC Errors]] -- Common LIRC errors and solutions
-  * [[http://iguanaworks.net/files|Download Drivers]] -- On this page you'll find the drivers for our usb devices in source form and packaged binaries (rpm and deb).
+  * [[https://www.iguanaworks.net/files|Download Drivers]] -- On this page you'll find the drivers for our usb devices in source form and packaged binaries (rpm and deb).
   * [[:usbir:Android|Android]] -- Nothing yet. Please post on Android and Iguanaworks USB IR Transceiver here.
   * User-Contributed Wiki's / Howto's:
     * [[:usbir:IpodOrIphoneForWindows|IpodOrIphoneForWindows]] -- Controlling Windows using an iPod Touch or iPhone
