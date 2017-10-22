@@ -1,0 +1,36 @@
+====== IguanaIR on a Raspberry Pi ======
+
+We no longer maintain a debian repository for the armhf architecture used by the Raspberry Pi. However, our software can easily be compiled into a proper debian package but by using the following instructions. We are assuming you are running Raspbian on your Raspberry Pi.
+
+First make sure everything is up to date on the your Pi, and then install some necessary packages by running:
+<code>
+sudo apt update
+sudo apt upgrade
+sudo apt install devscripts
+</code>
+
+Then grab the latest IguanaIR source tarball from https://github.com/iguanaworks/iguanair/releases. Unpack the file with
+<code>
+tar -xzf iguanaIR-1.2.0.tar.gz
+</code>
+Make sure your terminal is the in same directory as you downloaded the source tarball. Also change the name to match the version of your file. 
+
+Go into the new directory with the code (again change name to match version):
+<code>
+cd iguanaIR-1.2.0
+</code>
+
+Now install everything necessary to compile the package:
+<code>
+sudo mk-build-deps --install debian/control
+</code>
+
+Now we are ready to compile the package:
+<code>
+dpkg-buildpackage -uc -us
+</code>
+That's it. The packages should be one directory down. You can install them with
+<code>
+cd ..
+sudo dpkg -i *.deb
+</code>
