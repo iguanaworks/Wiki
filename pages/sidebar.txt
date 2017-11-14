@@ -1,3 +1,2 @@
 ~~NOCACHE~~ 
-~~INDEXEVERYWHERE~~
-
+{{indexmenu>..|js navbar nocookie}}
