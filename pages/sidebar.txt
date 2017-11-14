@@ -1,2 +1,3 @@
 ~~NOCACHE~~ 
-{{indexmenu>..|js navbar nocookie}}
+{{indexmenu>.|js navbar nocookie}}
+
