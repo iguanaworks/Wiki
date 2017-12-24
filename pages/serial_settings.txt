@@ -1,0 +1,6 @@
+====== Serial Transceiver: What are the proper settings for WinLIRC? ======
+{{ ::winlirc.png?nolink&600|}}
+The receiver type is DCD. The transmitter should be set to DTR. Make sure that the “hardware carrier” box is NOT checked. In fact, no boxes should be checked. Click on the image to th right for a screenshot of WinLIRC properly configured. More information can be found at the WinLIRC homepage.
+
+We have experienced problems with WinLIRC 0.9. If you are having problems with WinLIRC, please try the 0.8.7 release.
+
