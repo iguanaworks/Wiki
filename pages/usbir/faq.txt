@@ -1,15 +1,4 @@
-====== Ordering FAQ ======
-
-===== Where is my tracking number? =====
-
-Tracking is only available on orders placed with Express or Priority shipping. Standard Shipping does not include a tracking number. If you placed an order that has tracking, the tracking number should have been emailed to you in the shipping notice. If you are missing the tracking number, please fill out a [[https://www.iguanaworks.net/osTicket/|Support Request]].
-
-===== Can you alter the customs value of a shipment? =====
-Um, no.  The declared value of a shipment will match the price paid for that shipment. Sorry.
-
-===== Do you ship to [Insert Country]? =====
-We ship to any of the [[https://www.paypal.com/worldwide/|190 countries that Paypal supports]]. Basically if Paypal will process your transaction, we will ship it to you.
-
+Did you want the [[orders:faq|Ordering / Shipping Frequently Asked Questions]]?
 ====== USB IR Transceiver FAQ ======
 
 ===== Getting debug messages from igdaemon =====
@@ -127,3 +116,22 @@ High-power USB devices may draw up to 500mA, but only after getting permission f
 ===== Does the USB IR Transceiver work with Android? =====
 
 Not yet. Basically, our software ([[http://en.wikipedia.org/wiki/Opensource|open source]] under the [[http://www.gnu.org/licenses/old-licenses/gpl-2.0.html|GPL V2]] and available via SVN [[http://iguanaworks.net/repos/iguanair/public/trunk/|here]]) needs to be ported to Android. Our software depends on relatively few libraries (libc6, udev, libpopt0 and libusb) so if these libraries work on Android, we don’t expect porting to be too hard. That said, our device is very tightly connected to libusb so getting libusb support on Android will be crucial to using our device on Android. Hopefully other people have (or are working on) porting libusb to Android. If you have any news on these ports, tips for getting our code to compile on Android, etc, please post it [[usbir/Android|here]] (you must [[/register|signup]] for a trac login in order to post). Likewise, if you have any code submissions, please [[http://iguanaworks.net/contact-iguanaworks/|contact us]].
+
+===== igclient.exe opens and closes instantly =====
+When you double click on the client program igclient.exe, you will briefly see a command window open and then close. This is normal. igclient.exe is a command-line program that takes command line options. If no options are giving, it prints a list of options it takes and closes. To use the program, you need to be on the command-line. Goto Start, Run and type “cmd”. That will open up a command-line. From there you need to change to the directory contains the iguanaIR software:
+<code>
+cd c:\Program Files\IguanaIR
+</code>
+Once you are here, you can run the igclient.exe and see its output. Run:
+<code>
+igclient.exe
+</code>
+To test that the client can talk to our USB IR Transceiver, run:
+<code>
+igclient.exe --get-version
+</code>
+and you should see something like
+<code>
+get version: success: version=0x0306
+</code>
+For more information on using igclient, please see the [[usbir:igclient-examples|igclient examples page]].
