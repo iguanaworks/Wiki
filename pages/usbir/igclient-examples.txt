@@ -1,0 +1,59 @@
+If you want to check the firmware version of your device (or just check that you are able to talk to the device), run:
+<code>
+igclient --get-version
+</code>
+To get the name (or id) of a device, run:
+<code>
+igclient --get-id
+</code>
+If you want to set the id of a device (warning, please stop LIRC before running this command), run:
+<code>
+igclient --set-id=frank
+</code>
+You can string together multiple commands on one line. For example:
+<code>
+igclient --get-version --get-id
+</code>returns<code>
+get version: success: version=0x0306
+get id: success: id=iguana
+</code>
+If you want to put the device into receive (listening) mode, you will need to string together two commands. Just using the --receiver-on command will turn the receiver on and then the program will exit and close the receiver connection. So instead need tell the client to wait before exiting:
+<code>
+igclient --receiver-on --sleep 30
+</code>
+This will return
+<code>
+receiver on: success
+received 1 signal(s):
+space: 152917
+received 1 signal(s):
+space: 152917
+received 1 signal(s):
+…
+</code>
+for 30 seconds. The first line (receiver on: success) says that we successfully turned on the receiver. The next lines are streams of  what the device's IR receiver is seeing. The stream is broken down into USB packets. Each USB package begins with “received X signal(s):” and then a display of those X signals. Then the next packet is shown ,etc. In the case of no IR signal, each USB packet is just a (very, very) long space of duration 152917 µs.  If there is an IR signal, it will look something like this:
+<code>
+received 1 signal(s):
+space: 152917
+received 4 signal(s):
+space: 29333
+pulse: 2432
+space: 554
+pulse: 618
+received 7 signal(s):
+space: 576
+pulse: 1194
+space: 554
+pulse: 618
+space: 554
+pulse: 618
+space: 554
+</code>
+Where the there first 182250 µs (152917+29333) is no signal (very long space). Then a 2432 µs pulse followed by a 554 µs space and 618 µs pulse, etc.  How many signals are sent per packet depends on how long the pulses and spaces are are longer signals take up more of the data payload in the USB packet.
+
+To transmit IR, use the syntax
+<code>
+igclient –send=filename.txt
+</code>
+where filename is a text file with contents saying how long to send pulses and spaces. Take a look at [[https://github.com/iguanaworks/iguanair/blob/master/software/usb_ir/testdata/vcr-power.txt|vcr-power.txt]] for an example of how to format the file.
+
