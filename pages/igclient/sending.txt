@@ -36,6 +36,6 @@ Set which channels are used during transmits.  Look at the documentation of --ge
 ===== --get-carrier =====
 Check the carrier frequency for transmits.  The carrier frequency is adjustable given supported versions of the firmware (verison 0x0101 or higher) and driver (0.91 or higher).  This is the frequency at which the LEDs are flashed.  For example an IR pulse of 1000us actually consists of the LED flashing on and off at 38kHz for 1000us.  The default is 38kHz, and is compatible with most devices, however, frequencies from 25kHz to 100kHz are supported.
 
-===== --set-carrier======carrier (kHz) ==
+===== --set-carrier==carrier (kHz) ====
 Users can set the frequency used for transmission.  Please read the documentation for --get-carrier for details.
 
