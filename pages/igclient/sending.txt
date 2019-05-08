@@ -2,7 +2,7 @@
 
 The igclient provides a number of arguments to control signal transmission.
 
-===== --send======filename ==
+===== --send==filename =====
 Send the pulses and spaces from a file.  Files that are accepted by the send function must contain only lines specifying the lengths of alternating pulses and spaces in microseconds as shown below.  These pulses and spaces are sent to the daemon as an array of uint32_t values.  These are then translated inside the daemon into counts of a delay loop.  This translation is done on the PC to keep the firmware as simple as possible.
 <code>
 pulse 1040
@@ -30,7 +30,7 @@ pulse 982
 ===== --get-channels =====
 Check which channels are used during transmits.  Our current products have either 2, 3 or 4 channels.  If the device has 2 plugs all four channels are usable.  In hybrid versions channels 1, 3, and 4 are accessible.  Versions with 2 LEDs have an LED connected to channels 1 and 3.  For this command the channels are specified in hexadecimal format meaning that if channels 1 and 3 are in use the returned value (from --get-channels) will be 0x5. Channels 1 and 4 would be 0x09; Channel 3 alone would be 0x4. See http://en.wikipedia.org/wiki/Hexidecimal for more info on hexidecimal encoding.
 
-===== --set-channels======channels ==
+===== --set-channels==channels ====
 Set which channels are used during transmits.  Look at the documentation of --get-channels for an explanation of the channels.  Note that specifying a channel list that does not overlap with the accessible channels is possible and results in the firmware going through the motions of transmitting without emitting any light.
 
 ===== --get-carrier =====
